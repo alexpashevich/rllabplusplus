@@ -11,6 +11,7 @@ from sandbox.rocky.tf.baselines.q_baseline import QfunctionBaseline
 from rllab.envs.gym_env import GymEnv
 from rllab.envs.normalized_env import normalize
 from sandbox.rocky.tf.envs.base import TfEnv
+from grasp_env import GraspEnv
 
 from sandbox.rocky.tf.exploration_strategies.ou_strategy import OUStrategy
 
@@ -20,9 +21,13 @@ from sandbox.rocky.tf.policies.deterministic_mlp_policy import DeterministicMLPP
 from sandbox.rocky.tf.q_functions.continuous_mlp_q_function import ContinuousMLPQFunction
 
 def get_env(env_name, record_video=True, record_log=True, normalize_obs=False, **kwargs):
-    env = TfEnv(normalize(GymEnv(env_name, record_video=record_video,
+    if env_name == 'GraspEnv':
+        env = TfEnv(normalize(GraspEnv(**kwargs)))
+    else:
+        env = TfEnv(normalize(GymEnv(env_name, record_video=record_video,
         record_log=record_log), normalize_obs=normalize_obs))
     return env
+
 
 def get_policy(env, algo_name, **kwargs):
     policy = None
