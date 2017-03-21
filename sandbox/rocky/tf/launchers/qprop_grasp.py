@@ -1,4 +1,4 @@
-from sandbox.rocky.tf.launchers.launcher_utils import FLAGS, flags, get_env_info, get_annotations_string
+from sandbox.rocky.tf.launchers.launcher_utils import flags, get_env_info, get_annotations_string
 from rllab.misc.instrument import run_experiment_lite
 from rllab import config
 import os.path as osp
@@ -14,6 +14,7 @@ flags = grasp_env_default_flags(flags)
 def run_experiment(mode="local", keys=None, params=dict()):
     global flags
     flags = deepcopy(flags.FLAGS.__flags)
+    flags['qprop_run'] = True
     if 'env_name' not in params:
         params['env_name'] = 'GraspEnv'
     if 'qprop_use_qf_baseline' not in params:
@@ -53,7 +54,7 @@ def run_experiment(mode="local", keys=None, params=dict()):
         exp_prefix=exp_prefix,
         exp_name=exp_name,
         # Number of parallel workers for sampling
-        n_parallel=1,
+        n_parallel=flags['n_parallel'],
         snapshot_mode="last_best",
         # Specifies the seed for the experiment. If this is not provided, a random seed
         # will be used
@@ -68,6 +69,7 @@ def run_experiment(mode="local", keys=None, params=dict()):
     )
 
 def main(argv=None):
+    # import pudb; pudb.set_trace()
     run_experiment(mode="local")
 
 if __name__ == '__main__':

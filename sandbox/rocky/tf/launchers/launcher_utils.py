@@ -25,6 +25,7 @@ flags.DEFINE_string('algo_name', 'trpo', 'RLAlgorithm.')
 flags.DEFINE_boolean('overwrite', False, 'Overwrite logs by default.')
 flags.DEFINE_boolean('force_start', False, 'Force start all.')
 flags.DEFINE_integer('seed', 1, 'Seed.')
+flags.DEFINE_integer('n_parallel', 1, 'Number of parallel workers to perform rollouts.')
 flags.DEFINE_integer('max_episode', 50000, 'Max episodes.')
 flags.DEFINE_boolean('normalize_obs', False, 'Normalize observations.')
 
