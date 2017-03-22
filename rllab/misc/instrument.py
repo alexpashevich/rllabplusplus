@@ -359,6 +359,7 @@ def run_experiment_lite(
         sync_all_data_node_to_s3=True,
         use_cloudpickle=False,
         fast_code_sync=True,
+        resume_from=None,
         **kwargs):
     """
     Serialize the stubbed method call and run the experiment using the specified mode.
@@ -396,6 +397,8 @@ def run_experiment_lite(
                 use_cloudpickle=use_cloudpickle
             )
         ]
+        if resume_from is not None:
+            batch_tasks[0]['resume_from'] = resume_from
 
     global exp_count
     global remote_confirmed

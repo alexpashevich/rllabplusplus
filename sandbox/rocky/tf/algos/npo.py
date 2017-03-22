@@ -190,8 +190,6 @@ class NPO(BatchPolopt):
     @overrides
     def get_itr_snapshot(self, itr, samples_data):
         return dict(
+            algo=self,
             itr=itr,
-            policy=self.policy,
-            baseline=self.baseline,
-            env=self.env,
         )

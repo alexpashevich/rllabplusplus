@@ -15,6 +15,7 @@ import uuid
 import pickle as pickle
 import base64
 import joblib
+import tensorflow as tf
 
 #import logging
 
@@ -109,10 +110,12 @@ def run_experiment(argv):
     #logger.push_prefix("[%s] " % args.exp_name)
 
     if args.resume_from is not None:
-        data = joblib.load(args.resume_from)
-        assert 'algo' in data
-        algo = data['algo']
-        algo.train()
+        with tf.Session() as sess:
+            data = joblib.load(args.resume_from)
+            assert 'algo' in data
+            algo = data['algo']
+            algo.start_itr = data['itr']
+            algo.train()
     else:
         # read from stdin
         if args.use_cloudpickle:

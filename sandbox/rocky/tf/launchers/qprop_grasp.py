@@ -34,8 +34,14 @@ def run_experiment(mode="local", keys=None, params=dict()):
     max_path_length = flags['horizon']
     n_itr = int(np.ceil(float(n_episodes*max_path_length)/flags['batch_size']))
 
-    algo = get_algo(n_itr=n_itr, env=env, policy=policy, baseline=baseline,
-            qf=qf, es=es, max_path_length=max_path_length, **flags)
+    algo = get_algo(n_itr=n_itr,
+                    env=env,
+                    policy=policy,
+                    baseline=baseline,
+                    qf=qf,
+                    es=es,
+                    max_path_length=max_path_length,
+                    **flags)
 
     #exp_prefix='%s-%s-%d'%(flags["exp"], flags["env_name"], flags["batch_size"])
     exp_prefix='%s'%(flags["exp"])
@@ -65,11 +71,11 @@ def run_experiment(mode="local", keys=None, params=dict()):
         periodic_sync_interval=1200,
         # terminate_machine=False,
         # fast_code_sync=False,
+        resume_from=flags['resume_from'],
         mode=mode,
     )
 
 def main(argv=None):
-    # import pudb; pudb.set_trace()
     run_experiment(mode="local")
 
 if __name__ == '__main__':

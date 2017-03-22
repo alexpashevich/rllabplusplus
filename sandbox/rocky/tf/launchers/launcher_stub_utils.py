@@ -79,19 +79,19 @@ def get_baseline(env, algo_name, **kwargs):
     return baseline
 
 def get_algo(env, policy, es, qf, baseline, max_path_length,
-        batch_size, replay_pool_size, discount,
-        scale_reward, learning_rate, replacement_prob,
-        policy_updates_ratio,
-        step_size, gae_lambda,
-        sample_backups,
-        qprop_min_itr,
-        qf_updates_ratio,
-        qprop_use_qf_baseline,
-        qprop_eta_option,
-        algo_name,
-        qf_learning_rate,
-        n_itr,
-        **kwargs):
+             batch_size, replay_pool_size, discount,
+             scale_reward, learning_rate, replacement_prob,
+             policy_updates_ratio,
+             step_size, gae_lambda,
+             sample_backups,
+             qprop_min_itr,
+             qf_updates_ratio,
+             qprop_use_qf_baseline,
+             qprop_eta_option,
+             algo_name,
+             qf_learning_rate,
+             n_itr,
+             **kwargs):
     algo = None
     min_pool_size = 1000
     qf_batch_size = 64

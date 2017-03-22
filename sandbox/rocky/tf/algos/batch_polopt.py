@@ -167,9 +167,18 @@ class BatchPolopt(RLAlgorithm):
         return self.sampler.process_samples(itr, paths)
 
     def train(self):
-        with tf.Session() as sess:
-            sess.run(tf.initialize_all_variables())
+        if self.start_itr > 0:
+            # in case of resuming training, a session was already created while unpickling the model
+            sess = tf.get_default_session()
+        else:
+            # otherwise we start from scratch and have to create a new session
+            sess = tf.Session()
+        with sess.as_default():
+            if self.start_itr == 0:
+                # in case we resume training, no initialization is needed
+                sess.run(tf.initialize_all_variables())
             if self.qprop:
+                # TODO: fix resuming training here
                 pool = SimpleReplayPool(
                     max_pool_size=self.replay_pool_size,
                     observation_dim=self.env.observation_space.flat_dim,
@@ -178,8 +187,10 @@ class BatchPolopt(RLAlgorithm):
                 )
             self.start_worker()
             self.init_opt()
-            # This initializes the optimizer parameters
-            sess.run(tf.initialize_all_variables())
+            if self.start_itr == 0:
+                # This initializes the optimizer parameters
+                # again if we resume training, no initialization is needed
+                sess.run(tf.initialize_all_variables())
             start_time = time.time()
             for itr in range(self.start_itr, self.n_itr):
                 itr_start_time = time.time()
@@ -219,7 +230,7 @@ class BatchPolopt(RLAlgorithm):
                         self.update_plot()
                         if self.pause_for_plot:
                             input("Plotting evaluation run: Press Enter to "
-                                  "continue...")
+                                    "continue...")
         self.shutdown_worker()
 
     def log_diagnostics(self, paths):
